@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 0%; /* Black */
+  --foreground: 0 0% 98%; /* White */
+  --card: 0 0% 7%; /* Dark gray for cards */
+  --card-foreground: 0 0% 98%; /* White */
+  --popover: 0 0% 0%; /* Black */
+  --popover-foreground: 0 0% 98%; /* White */
+  --primary: 35 100% 50%; /* Amber gold */
+  --primary-foreground: 0 0% 0%; /* Black */
+  --secondary: 0 0% 100%; /* White */
+  --secondary-foreground: 0 0% 0%; /* Black */
+  --muted: 0 0% 15%; /* Dark gray */
+  --muted-foreground: 0 0% 70%; /* Light gray */
+  --accent: 35 100% 50%; /* Amber gold */
+  --accent-foreground: 0 0% 0%; /* Black */
+  --destructive: 0 62.8% 30.6%; /* Red */
+  --destructive-foreground: 0 0% 98%; /* White */
+  --border: 0 0% 15%; /* Dark gray */
+  --input: 0 0% 15%; /* Dark gray */
+  --ring: 35 100% 50%; /* Amber gold */
+  --radius: 0.5rem;
+
+  /* Sidebar specific colors */
+  --sidebar-background: 0 0% 5%; /* Very dark gray */
+  --sidebar-foreground: 0 0% 98%; /* White */
+  --sidebar-primary: 35 100% 50%; /* Amber gold */
+  --sidebar-primary-foreground: 0 0% 0%; /* Black */
+  --sidebar-accent: 0 0% 10%; /* Dark gray */
+  --sidebar-accent-foreground: 0 0% 98%; /* White */
+  --sidebar-border: 0 0% 15%; /* Dark gray */
+  --sidebar-ring: 35 100% 50%; /* Amber gold */
+
+  /* Chart colors */
+  --chart-1: 35 100% 50%; /* Amber gold */
+  --chart-2: 0 0% 100%; /* White */
+  --chart-3: 0 0% 70%; /* Light gray */
+  --chart-4: 35 80% 40%; /* Darker amber */
+  --chart-5: 35 50% 60%; /* Lighter amber */
+}
+
+.light {
+  --background: 0 0% 100%; /* White */
+  --foreground: 0 0% 0%; /* Black */
+  --card: 0 0% 98%; /* Very light gray */
+  --card-foreground: 0 0% 0%; /* Black */
+  --popover: 0 0% 100%; /* White */
+  --popover-foreground: 0 0% 0%; /* Black */
+  --primary: 35 100% 50%; /* Amber gold */
+  --primary-foreground: 0 0% 0%; /* Black */
+  --secondary: 0 0% 0%; /* Black */
+  --secondary-foreground: 0 0% 100%; /* White */
+  --muted: 0 0% 90%; /* Light gray */
+  --muted-foreground: 0 0% 45%; /* Mid gray */
+  --accent: 35 80% 45%; /* Darker amber */
+  --accent-foreground: 0 0% 0%; /* Black */
+  --destructive: 0 84.2% 60.2%; /* Red */
+  --destructive-foreground: 0 0% 98%; /* White */
+  --border: 0 0% 80%; /* Light gray */
+  --input: 0 0% 90%; /* Light gray */
+  --ring: 35 100% 50%; /* Amber gold */
+
+  /* Sidebar specific colors */
+  --sidebar-background: 35 30% 95%; /* Very light amber */
+  --sidebar-foreground: 0 0% 0%; /* Black */
+  --sidebar-primary: 35 100% 50%; /* Amber gold */
+  --sidebar-primary-foreground: 0 0% 0%; /* Black */
+  --sidebar-accent: 35 50% 90%; /* Light amber */
+  --sidebar-accent-foreground: 0 0% 0%; /* Black */
+  --sidebar-border: 35 30% 85%; /* Light amber */
+  --sidebar-ring: 35 100% 50%; /* Amber gold */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/50 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  @apply shadow-lg;
+}
