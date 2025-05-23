@@ -29,18 +29,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // Form validation schema
-const formSchema = createInsertSchema(restaurants)
-  .pick({
-    name: true,
-    description: true,
-  })
-  .extend({
-    name: z.string().min(2, {
-      message: "Restaurant name must be at least 2 characters.",
-    }),
-  });
+export const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Restaurant name must be at least 2 characters.",
+  }),
+  description: z.string().optional().nullable(),
+});
 
-type FormData = z.infer<typeof formSchema>;
+export type FormData = z.infer<typeof formSchema>;
 
 export function AddRestaurantDialog() {
   const [open, setOpen] = useState(false);

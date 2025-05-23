@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, } from "drizzle-zod";
 import { menuItems } from "../../../shared/schema";
 import { useCreateMenuItem, useUpdateMenuItem } from "@/hooks/use-menu-items";
 import { useToast } from "@/hooks/use-toast";
@@ -36,33 +36,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { desc } from "drizzle-orm";
 
 // Form validation schema
-const formSchema =createInsertSchema(menuItems)
-  .pick({
-    name: true,
-    price: true,
-    max_portion: true,
-    dish_type: true,
-    status: true,
-  })
-  .extend({
-    name: z.string().min(2, {
-      message: "Menu item name must be at least 2 characters.",
-    }),
-    price: z.coerce.number().min(1, {
-      message: "Price must be at least 1.",
-    }),
-    max_portion: z.coerce.number().min(1, {
-      message: "Maximum portions must be at least 1.",
-    }),
-    dish_type: z.enum(["main", "side", "dessert", "drink"], {
-      required_error: "Please select a dish type.",
-    }),
-    status: z.enum(["available", "unavailable"]).default("available"),
-  });
+export const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Menu item name must be at least 2 characters.",
+  }),
+  price: z.coerce.number().min(1, {
+    message: "Price must be at least 1.",
+  }),
+  max_portion: z.coerce.number().min(1, {
+    message: "Maximum portions must be at least 1.",
+  }),
+  dish_type: z.enum(["main", "side", "dessert", "drink"], {
+    required_error: "Please select a dish type.",
+  }),
+  status: z.enum(["available", "unavailable"]).default("available"),
 
-type FormData = z.infer<typeof formSchema>;
+  description: z.string().optional(),
+});
+
+export type FormData = z.infer<typeof formSchema>;
+
 
 interface AddMenuItemDialogProps {
   restaurantId: number;
@@ -74,7 +70,7 @@ export function AddMenuItemDialog({ restaurantId }: AddMenuItemDialogProps) {
   const createMenuItem = useCreateMenuItem();
 
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema as any),
+    resolver: zodResolver(formSchema as any),   
     defaultValues: {
       name: "",
       price: 0,
@@ -258,7 +254,7 @@ export function AddMenuItemDialog({ restaurantId }: AddMenuItemDialogProps) {
                 Cancel
               </Button>
               <Button 
-                type="submit" 
+                type="submit"
                 disabled={createMenuItem.isPending}
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
@@ -293,7 +289,7 @@ export function EditMenuItemDialog({
     defaultValues: {
       name: menuItem.name,
       price: menuItem.price,
-      max_portion: menuItem.max_portion,
+      max_portion: menuItem.max_portion ?? 0,
       dish_type: menuItem.dish_type as "main" | "side" | "dessert" | "drink",
       description: menuItem.description || "",
       status: menuItem.status as "available" | "unavailable",

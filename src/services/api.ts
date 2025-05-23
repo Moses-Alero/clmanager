@@ -176,22 +176,11 @@ export const api = {
   createRestaurant: async (
     data: InsertRestaurant
   ): Promise<RestaurantResponse> => {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-
-    const newRestaurant: Restaurant = {
-      id: Math.max(...mockRestaurants.map((r) => r.id)) + 1,
-      name: data.name,
-      description: data.description || null,
-    };
-
-    mockRestaurants.push(newRestaurant);
-
-    return {
-      status: "success",
-      status_code: 201,
-      message: "Restaurant created successfully",
-      result: newRestaurant,
-    };
+    const res = await apiRequest(`/restaurant/`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return res as RestaurantResponse;
   },
 
   // Update a restaurant
@@ -255,34 +244,12 @@ export const api = {
     restaurantId: number,
     data: InsertMenuItem
   ): Promise<MenuItemResponse> => {
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    const res = await apiRequest(`/menu/${restaurantId}`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
 
-    const allMenuItems = Object.values(mockMenuItems).flat();
-    const newId = Math.max(...allMenuItems.map((item) => item.id)) + 1;
-
-    const newMenuItem: MenuItem = {
-      id: newId,
-      name: data.name,
-      price: data.price,
-      max_portion: data.max_portion || null,
-      dish_type: data.dish_type || "main",
-      status: data.status || "available",
-      description: data.description || null,
-      restaurant_id: restaurantId,
-    };
-
-    if (!mockMenuItems[restaurantId]) {
-      mockMenuItems[restaurantId] = [];
-    }
-
-    mockMenuItems[restaurantId].push(newMenuItem);
-
-    return {
-      status: "success",
-      status_code: 201,
-      message: "Menu item created successfully",
-      result: newMenuItem,
-    };
+    return res as MenuItemResponse;
   },
 
   // Update a menu item
@@ -299,29 +266,9 @@ export const api = {
 
   // Delete a menu item
   deleteMenuItem: async (id: number): Promise<ApiResponse<void>> => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    let foundItem = false;
-
-    for (const restaurantId in mockMenuItems) {
-      const restaurantMenuItems = mockMenuItems[restaurantId];
-      const itemIndex = restaurantMenuItems.findIndex((item) => item.id === id);
-
-      if (itemIndex !== -1) {
-        mockMenuItems[restaurantId].splice(itemIndex, 1);
-        foundItem = true;
-        break;
-      }
-    }
-
-    if (!foundItem) {
-      throw new Error("Menu item not found");
-    }
-
-    return {
-      status: "success",
-      status_code: 200,
-      message: "Menu item deleted successfully",
-    };
+    const res = await apiRequest(`/menu/${id}`, {
+      method: "DELETE",
+    });
+    return res as ApiResponse<void>;
   },
 };

@@ -45,9 +45,45 @@ export const insertMenuItemSchema = createInsertSchema(menuItems).pick({
 
 export const updateMenuItemSchema = createInsertSchema(menuItems).partial();
 
-export type InsertRestaurant = z.infer<typeof insertRestaurantSchema>;
-export type Restaurant = typeof restaurants.$inferSelect;
+export interface Restaurant {
+  id: number;
+  name: string;
+  description: string | null;
+}
 
-export type InsertMenuItem = z.infer<typeof insertMenuItemSchema>;
-export type MenuItem = typeof menuItems.$inferSelect;
-export type UpdateMenuItem = z.infer<typeof updateMenuItemSchema>;
+export interface InsertRestaurant {
+  name: string;
+  description?: string | null;
+}
+
+export interface MenuItem {
+  id: number;
+  name: string;
+  price: number;
+  max_portion: number | null;
+  dish_type: string;
+  status: string;
+  description: string | null;
+  restaurant_id: number;
+}
+
+export interface InsertMenuItem {
+  name: string;
+  price: number;
+  max_portion?: number | null;
+  dish_type?: string;
+  status?: string;
+  description?: string | null;
+  restaurant_id: number;
+}
+
+export interface UpdateMenuItem {
+  id?: number;
+  name?: string;
+  price?: number;
+  max_portion?: number | null;
+  dish_type?: string;
+  status?: string;
+  description?: string | null;
+  restaurant_id?: number;
+}

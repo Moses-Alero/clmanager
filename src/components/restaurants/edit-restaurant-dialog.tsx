@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createInsertSchema } from "drizzle-zod";
-import { restaurants } from "@shared/schema";
 import { useUpdateRestaurant } from "@/hooks/use-restaurants";
 import { useToast } from "@/hooks/use-toast";
-import { type Restaurant } from "@shared/schema";
+import { type Restaurant } from "../../../shared/schema";
 
 import {
   Dialog,
@@ -28,18 +26,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // Form validation schema
-const formSchema = createInsertSchema(restaurants)
-  .pick({
-    name: true,
-    description: true,
-  })
-  .extend({
-    name: z.string().min(2, {
-      message: "Restaurant name must be at least 2 characters.",
-    }),
-  });
+export const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Restaurant name must be at least 2 characters.",
+  }),
+  description: z.string().optional().nullable(),
+});
 
-type FormData = z.infer<typeof formSchema>;
+export type FormData = z.infer<typeof formSchema>;
 
 interface EditRestaurantDialogProps {
   open: boolean;
@@ -121,7 +115,8 @@ export function EditRestaurantDialog({
                     <Textarea 
                       placeholder="Enter restaurant description" 
                       className="bg-muted border-border text-foreground placeholder:text-muted-foreground resize-none h-24"
-                      {...field} 
+                      {...field}
+                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
