@@ -18,7 +18,7 @@ import {
 export const BASE_URL = "https://choplinks-bot.fly.dev";
 
 // Mock data for restaurants
-const mockRestaurants: Restaurant[] = [
+let mockRestaurants: Restaurant[] = [
   {
     id: 1,
     name: "Home Ways 🏠",
@@ -151,7 +151,9 @@ export const api = {
   // Get all restaurants
   getRestaurants: async (): Promise<RestaurantsResponse> => {
     const res = await apiRequest("/restaurant/");
-    return res as RestaurantsResponse;
+    const response = res as RestaurantsResponse;
+    mockRestaurants = response.result;
+    return response;
   },
 
   // Get a single restaurant by ID
