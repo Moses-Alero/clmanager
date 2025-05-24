@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { desc } from "drizzle-orm";
+
 
 // Form validation schema
 export const formSchema = z.object({
@@ -49,7 +49,7 @@ export const formSchema = z.object({
   max_portion: z.coerce.number().min(1, {
     message: "Maximum portions must be at least 1.",
   }),
-  dish_type: z.enum(["main", "side", "dessert", "drink"], {
+  dish_type: z.enum(["main", "side", "dessert", "drink", "chicken"], {
     required_error: "Please select a dish type.",
   }),
   status: z.enum(["available", "unavailable"]).default("available"),
@@ -194,6 +194,7 @@ export function AddMenuItemDialog({ restaurantId }: AddMenuItemDialogProps) {
                     <SelectContent className="bg-background border-border">
                       <SelectItem value="main">Main Dish</SelectItem>
                       <SelectItem value="side">Side Dish</SelectItem>
+                      <SelectItem value="chicken">Chicken Dish</SelectItem>
                       <SelectItem value="dessert">Dessert</SelectItem>
                       <SelectItem value="drink">Drink</SelectItem>
                     </SelectContent>
@@ -290,7 +291,7 @@ export function EditMenuItemDialog({
       name: menuItem.name,
       price: menuItem.price,
       max_portion: menuItem.max_portion ?? 0,
-      dish_type: menuItem.dish_type as "main" | "side" | "dessert" | "drink",
+      dish_type: menuItem.dish_type as "main" | "side" | "dessert" | "drink" | "chicken",
       description: menuItem.description || "",
       status: menuItem.status as "available" | "unavailable",
     },
@@ -401,6 +402,7 @@ export function EditMenuItemDialog({
                     <SelectContent className="bg-background border-border">
                       <SelectItem value="main">Main Dish</SelectItem>
                       <SelectItem value="side">Side Dish</SelectItem>
+                      <SelectItem value="chicken">Chicken Dish</SelectItem>
                       <SelectItem value="dessert">Dessert</SelectItem>
                       <SelectItem value="drink">Drink</SelectItem>
                     </SelectContent>
