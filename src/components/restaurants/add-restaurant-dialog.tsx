@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createInsertSchema } from "drizzle-zod";
-import { restaurants } from "../../../shared/schema";
 import { useCreateRestaurant } from "@/hooks/use-restaurants";
 import { useToast } from "@/hooks/use-toast";
 
@@ -33,6 +31,12 @@ export const formSchema = z.object({
   name: z.string().min(2, {
     message: "Restaurant name must be at least 2 characters.",
   }),
+  plate_price: z.coerce.number().min(0, {
+      message: "Plate price must be a positive number.",
+    }).optional(),
+  delivery_fee: z.coerce.number().min(0, {
+      message: "Delivery fee must be a positive number.",
+    }).optional(),
   description: z.string().optional().nullable(),
 });
 
@@ -48,6 +52,8 @@ export function AddRestaurantDialog() {
     defaultValues: {
       name: "",
       description: "",
+      plate_price: 0,
+      delivery_fee: 0,
     },
   });
 
@@ -98,6 +104,42 @@ export function AddRestaurantDialog() {
                   <FormControl>
                     <Input 
                       placeholder="Enter restaurant name" 
+                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="plate_price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground">Plate Price</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="number" 
+                      placeholder="Enter plate price" 
+                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="delivery_fee"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground">Delivery Fee</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="number" 
+                      placeholder="Enter delivery fee" 
                       className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                       {...field} 
                     />

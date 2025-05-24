@@ -1,4 +1,4 @@
-import { type Restaurant, type MenuItem } from "@shared/schema";
+import { type Restaurant, type MenuItem } from "../../shared/schema";
 
 export interface ApiResponse<T> {
   status: string;
@@ -23,7 +23,7 @@ export interface MenuItemResponse extends ApiResponse<MenuItem> {
   result: MenuItem;
 }
 
-export type DishType = "main" | "side" | "dessert" | "drink";
+export type DishType = "main" | "side" | "dessert" | "chicken" | "drink";
 export type MenuItemStatus = "available" | "unavailable";
 
 export interface MenuItemFilters {

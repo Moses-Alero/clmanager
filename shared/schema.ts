@@ -48,6 +48,8 @@ export const updateMenuItemSchema = createInsertSchema(menuItems).partial();
 export interface Restaurant {
   id: number;
   name: string;
+  plate_price: number;
+  delivery_fee: number;
   description: string | null;
 }
 

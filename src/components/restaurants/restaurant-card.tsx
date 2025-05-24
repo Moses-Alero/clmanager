@@ -44,6 +44,12 @@ export const formSchema = z.object({
   name: z.string().min(2, {
     message: "Restaurant name must be at least 2 characters.",
   }),
+  plate_price: z.coerce.number().min(0, {
+      message: "Plate price must be a positive number.",
+    }).optional(),
+  delivery_fee: z.coerce.number().min(0, {
+      message: "Delivery fee must be a positive number.",
+    }).optional(),
   description: z.string().optional().nullable(),
 });
 
@@ -63,6 +69,8 @@ function EditRestaurantForm({ restaurant, onCancel, onSuccess }: EditRestaurantF
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: restaurant.name,
+      plate_price: restaurant.plate_price || 0,
+      delivery_fee: restaurant.delivery_fee || 0,
       description: restaurant.description || "",
     },
   });
@@ -99,6 +107,42 @@ function EditRestaurantForm({ restaurant, onCancel, onSuccess }: EditRestaurantF
               <FormControl>
                 <Input 
                   placeholder="Enter restaurant name" 
+                  className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="plate_price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-foreground">Plate Price</FormLabel>
+              <FormControl>
+                <Input 
+                  type="number" 
+                  placeholder="Enter plate price" 
+                  className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="delivery_fee"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-foreground">Delivery Fee</FormLabel>
+              <FormControl>
+                <Input 
+                  type="number" 
+                  placeholder="Enter delivery fee" 
                   className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                   {...field} 
                 />

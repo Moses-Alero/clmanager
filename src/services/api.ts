@@ -23,16 +23,22 @@ let mockRestaurants: Restaurant[] = [
     id: 1,
     name: "Home Ways 🏠",
     description: "Home-style cooking with fresh ingredients",
+    plate_price: 1000,
+    delivery_fee: 200,
   },
   {
     id: 2,
     name: "Spice Haven",
     description: "Best spicy foods from around the world",
+    plate_price: 1000,
+    delivery_fee: 200,
   },
   {
     id: 3,
     name: "Fresh Bites",
     description: "Healthy and delicious meals",
+    plate_price: 1000,
+    delivery_fee: 200,
   },
 ];
 
@@ -190,29 +196,11 @@ export const api = {
     id: number,
     data: InsertRestaurant
   ): Promise<RestaurantResponse> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const restaurantIndex = mockRestaurants.findIndex((r) => r.id === id);
-
-    if (restaurantIndex === -1) {
-      throw new Error("Restaurant not found");
-    }
-
-    const updatedRestaurant: Restaurant = {
-      ...mockRestaurants[restaurantIndex],
-      name: data.name,
-      description:
-        data.description || mockRestaurants[restaurantIndex].description,
-    };
-
-    mockRestaurants[restaurantIndex] = updatedRestaurant;
-
-    return {
-      status: "success",
-      status_code: 200,
-      message: "Restaurant updated successfully",
-      result: updatedRestaurant,
-    };
+    const res = await apiRequest(`/restaurant/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+    return res as RestaurantResponse;
   },
 
   // Get all menu items for a restaurant
